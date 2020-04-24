@@ -1,20 +1,19 @@
-NAME	= program
+NAME	= PanSim
 
 CC	= g++
 
 RM	= rm -f
 
-SRCS	= ./src/main.cpp 
+SRCS	= $(wildcard src/*.cpp)
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CPPFLAGS = -I 
-CPPFLAGS += -Wall -Wextra
+CPPFLAGS += -Wall -Wextra -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -g
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
+	 $(CC) $(OBJS) -o $(NAME) $(CPPFLAGS)
 
 clean:
 	$(RM) $(OBJS)
