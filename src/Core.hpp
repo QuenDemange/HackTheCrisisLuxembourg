@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Simulation.hpp"
 #include <iostream>
+#include "Person.hpp"
 
 class Core {
     public:
@@ -19,4 +20,5 @@ class Core {
         sf::Clock _clock;
         Simulation *_sim;
         float _delta;
+        std::vector<Person> _persons;
 };
