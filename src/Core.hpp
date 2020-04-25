@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "slider.hpp"
 #include "Simulation.hpp"
 
 static const int WINDOW_X = 1920;
@@ -32,4 +33,8 @@ class Core {
         float _delta;
         sf::RectangleShape _botline;
         sf::RectangleShape _rightline;
+        sf::Texture _reset_txt;
+        sf::Sprite _reset;
+        sf::Texture _play_txt;
+        sf::Sprite _play;
 };
