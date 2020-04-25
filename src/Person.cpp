@@ -9,7 +9,7 @@
 #include "Define.hpp"
 
 Person::Person(int id)
-: _body(), _position(), _direction(), _id(id)
+: _id(id), _body(), _position(), _direction()
 {
     _state = ALIVE;
     _position.x = std::rand() % static_cast<int> (SIM_X - _body.getRadius()) + _body.getRadius();
@@ -48,7 +48,7 @@ bool Person::touch(sf::Vector2f position)
 
 bool Person::containId(int id)
 {
-    for (std::list<int>::iterator i = _alreadyCalculate.begin; i != _alreadyCalculate.end(); ++i)
+    for (std::list<int>::iterator i = _alreadyCalculate.begin(); i != _alreadyCalculate.end(); ++i)
         if (*i == id)
             return (true);
     return (false);
