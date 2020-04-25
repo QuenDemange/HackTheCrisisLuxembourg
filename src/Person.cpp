@@ -15,12 +15,14 @@ Person::Person(int id)
     _position.x = std::rand() % static_cast<int> (SIM_X - _body.getRadius()) + _body.getRadius();
     _position.y = std::rand() % static_cast<int> (SIM_Y - _body.getRadius()) + _body.getRadius();
     _body.setFillColor(sf::Color::White);
-    _body.setRadius(5);
+    _body.setRadius(10);
     _body.setPosition(_position);
     _body.setPointCount(100);
     changeDest();
     calcUnit();
     _speed = 100.0f;
+    _isConfined = false;
+    _delta = 0.0f;
 }
 
 void Person::changeDest()
@@ -62,11 +64,35 @@ void Person::cleanList(std::vector<Person> persons)
                 _alreadyCalculate.remove(i->_id);
 }
 
-void Person::simulate(std::vector<Person> *persons) // TO DO Mettre en argument toute les probabilité du menu
+void Person::confined()
 {
-    float contagious= 30;
+    _isConfined = true;
+}
+
+void Person::immune()
+{
+    _state = IMMUNE;
+    _body.setFillColor(sf::Color::Blue);
+}
+
+void Person::simulate(std::vector<Person> *persons, float delta) // TO DO Mettre en argument toute les probabilité du menu
+{
+    float contagious = 30.0f;
+    float mortality = 20.0f;
+    float timeDisease = 5.0f;
+
     if (_state != INFECTED)
         return;
+    _delta += delta;
+    if (_delta >= timeDisease) {
+        _delta = 0;
+        int r = std::rand() % 101 + 1;
+        if (r <= mortality)
+            death();
+        else
+            immune();
+        return;
+    }
     for (std::vector<Person>::iterator i = (*persons).begin(); i != (*persons).end(); ++i) {
         if (i->_id == _id || containId(i->_id) || i->_state == INFECTED ||i->_state == DEATH || i->_state == IMMUNE)
             continue;
@@ -93,8 +119,8 @@ void Person::death()
 
 bool Person::isArrived()
 {
-    if (_position.x >= _dest.x - 2 && _position.x <= _dest.x + 2)
-        if (_position.y >= _dest.y - 2 && _position.y <= _dest.y + 2)
+    if (_position.x >= _dest.x - 5 && _position.x <= _dest.x + 5)
+        if (_position.y >= _dest.y - 5 && _position.y <= _dest.y + 5)
             return (true);
     return (false);
 }
@@ -109,7 +135,7 @@ void Person::calcUnit()
 
 void Person::move(float _delta)
 {
-    if (_state == DEATH)
+    if (_state == DEATH || _isConfined)
         return;
     if (isArrived()) {
         changeDest();

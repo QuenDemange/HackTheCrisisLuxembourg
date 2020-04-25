@@ -30,8 +30,10 @@ class Person {
         ~Person();
         bool touch(sf::Vector2f position);
         void infected();
-        void simulate(std::vector<Person> *persons);
+        void immune();
+        void simulate(std::vector<Person> *persons, float delta);
         void move(float _delta);
+        void confined();
         sf::CircleShape *getCircle();
     private:
         const int _id;
@@ -48,6 +50,8 @@ class Person {
         sf::Vector2f _dest;
         float _speed;
         std::list<int> _alreadyCalculate;
+        bool _isConfined;
+        float _delta;
 };
 
 #endif /* !PERSON_HPP_ */
