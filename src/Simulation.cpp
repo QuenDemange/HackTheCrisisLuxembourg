@@ -27,7 +27,7 @@ Simulation::~Simulation()
 void Simulation::update(const float _delta)
 {
     for (std::vector<Person>::iterator i = _persons.begin(); i != _persons.end(); ++i) {
-        i->simulate(&_persons);
+        i->simulate(&_persons, _delta);
         i->move(_delta);
     }
 }
