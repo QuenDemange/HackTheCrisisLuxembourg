@@ -21,10 +21,8 @@ void Core::processEvents()
     if (_event.type == sf::Event::Closed)
         _window.close();
     if (_event.type == sf::Event::KeyPressed)
-        if (_event.key.code == sf::Keyboard::Escape) {
-            std::cout << "HEO" << std::endl;
-            _window.close();            
-        }
+        if (_event.key.code == sf::Keyboard::Escape)
+            _window.close();
 }
 
 void Core::update()
