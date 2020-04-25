@@ -3,10 +3,12 @@
 Core::Core()
     : _window(sf::VideoMode(WINDOW_X, WINDOW_Y), "Pandemic simulator", sf::Style::Fullscreen), _event(), _clock(), _sim(new Simulation(true)), _delta(0), _botline(sf::Vector2f(WINDOW_X, 5)), _rightline(sf::Vector2f(5, WINDOW_Y - 380)), _reset_txt(), _reset(), _play_txt(), _play()
 {
-    _reset_txt.loadFromFile("src/reset.png");
+    if (!_reset_txt.loadFromFile("src/reset.png"))
+        _reset_txt.loadFromFile("reset.png");
     _reset.setTexture(_reset_txt);
     _reset.setPosition(1730, 890);
-    _play_txt.loadFromFile("src/play.png");
+    if (!_play_txt.loadFromFile("src/play.png"))
+        _play_txt.loadFromFile("play.png");
     _play.setTexture(_play_txt);
     _play.setPosition(1730, 700);
     _botline.setPosition(0, SIM_Y);

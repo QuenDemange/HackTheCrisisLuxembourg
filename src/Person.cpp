@@ -72,7 +72,7 @@ void Person::confined()
 void Person::immune()
 {
     _state = IMMUNE;
-    _body.setFillColor(sf::Color::Blue);
+    _body.setFillColor(sf::Color::Green);
 }
 
 void Person::simulate(std::vector<Person> *persons, float delta) // TO DO Mettre en argument toute les probabilité du menu
