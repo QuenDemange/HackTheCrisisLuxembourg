@@ -62,21 +62,22 @@ void Person::cleanList(std::vector<Person> persons)
                 _alreadyCalculate.remove(i->_id);
 }
 
-void Person::simulate(std::vector<Person> persons) // TO DO Mettre en argument toute les probabilité du menu
+void Person::simulate(std::vector<Person> *persons) // TO DO Mettre en argument toute les probabilité du menu
 {
     float contagious= 30;
     if (_state != INFECTED)
         return;
-    for (std::vector<Person>::iterator i = persons.begin(); i != persons.end(); ++i) {
+    for (std::vector<Person>::iterator i = (*persons).begin(); i != (*persons).end(); ++i) {
         if (i->_id == _id || containId(i->_id) || i->_state == INFECTED ||i->_state == DEATH || i->_state == IMMUNE)
             continue;
-        if (touch(i->_position))
+        if (touch(i->_position)) {
             if (std::rand() % 101 + 1 <= contagious) {
                 i->infected();
                 _alreadyCalculate.push_front(i->_id);
             }
+        }
     }
-    cleanList(persons);
+    cleanList(*persons);
 }
 
 sf::CircleShape *Person::getCircle()

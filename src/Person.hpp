@@ -30,7 +30,7 @@ class Person {
         ~Person();
         bool touch(sf::Vector2f position);
         void infected();
-        void simulate(std::vector<Person> persons);
+        void simulate(std::vector<Person> *persons);
         void move(float _delta);
         sf::CircleShape *getCircle();
     private:
