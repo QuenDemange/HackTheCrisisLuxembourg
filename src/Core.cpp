@@ -1,8 +1,10 @@
 #include "Core.hpp"
 
 Core::Core()
-: _window(sf::VideoMode(1920, 1080), "Pandemic simulator", sf::Style::Fullscreen), _event(), _clock(), _sim(), _delta(0)
+    : _window(sf::VideoMode(WINDOW_X, WINDOW_Y), "Pandemic simulator", sf::Style::Fullscreen), _event(), _clock(), _sim(), _delta(0), _botline(sf::Vector2f(WINDOW_X, 5)), _rightline(sf::Vector2f(5, WINDOW_Y))
 {
+    _botline.setPosition(0, SIM_Y);
+    _rightline.setPosition(SIM_X, 0);
     _window.setFramerateLimit(60);
     int n = std::rand() % 100;
     for (int i = 0; i < n; i++)
@@ -19,13 +21,26 @@ void Core::processEvents()
     if (_event.type == sf::Event::Closed)
         _window.close();
     if (_event.type == sf::Event::KeyPressed)
-        if (_event.key.code == sf::Keyboard::Escape)
-            _window.close();
-    // if (_event.type == sf::Event::MouseButtonPressed)
-    //     if (_event.mouseButton.button == sf::Mouse::Left)
-    //         std::cout << rand();
-    //     else
-            
+        if (_event.key.code == sf::Keyboard::Escape) {
+            std::cout << "HEO" << std::endl;
+            _window.close();            
+        }
+}
+
+void Core::update()
+{
+    for (std::vector<Person>::iterator i = _persons.begin(); i != _persons.end(); ++i)
+        i->move(_delta);
+}
+
+void Core::display()
+{
+    _window.clear(sf::Color(20, 20, 199));
+    for (std::vector<Person>::iterator i = _persons.begin(); i != _persons.end(); ++i)
+        _window.draw(*i->getCircle());
+    _window.draw(_botline);
+    _window.draw(_rightline);
+    _window.display();
 }
 
 int Core::launch()
@@ -35,12 +50,8 @@ int Core::launch()
         _delta = _clock.restart().asSeconds();
         while (_window.pollEvent(_event))
             processEvents();
-        _window.clear(sf::Color(20, 20, 199));
-        for (std::vector<Person>::iterator i = _persons.begin(); i != _persons.end(); ++i) {
-            i->move(_delta);
-            _window.draw(*i->getCircle());
-        }
-        _window.display();
+        update();
+        display();
     }
     return (0);
 }

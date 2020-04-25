@@ -6,13 +6,14 @@
 */
 
 #include "Person.hpp"
+#include "Define.hpp"
 
 Person::Person()
 : _body(), _position(), _direction()
 {
     _state = ALIVE;
-    _position.x = std::rand() % 1920;
-    _position.y = std::rand() % 1080;
+    _position.x = std::rand() % SIM_X;
+    _position.y = std::rand() % SIM_Y;
     _body.setFillColor(sf::Color::White);
     _body.setRadius(5);
     _body.setPosition(_position);
@@ -24,7 +25,7 @@ Person::Person()
 
 void Person::changeDest()
 {
-    _dest = {std::rand() % static_cast<int> (1920 - _body.getRadius()) + _body.getRadius(), std::rand() % static_cast<int> (1080 - _body.getRadius()) + _body.getRadius()};
+    _dest = {std::rand() % static_cast<int> (SIM_X - _body.getRadius()) + _body.getRadius(), std::rand() % static_cast<int> (SIM_Y - _body.getRadius()) + _body.getRadius()};
 }
 
 Person::~Person()
