@@ -1,9 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Simulation.hpp"
 #include <iostream>
-#include "Person.hpp"
+#include "Simulation.hpp"
 
 static const int WINDOW_X = 1920;
 static const int WINDOW_Y = 1080;
@@ -33,5 +32,4 @@ class Core {
         float _delta;
         sf::RectangleShape _botline;
         sf::RectangleShape _rightline;
-        std::vector<Person> _persons;
 };
