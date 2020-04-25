@@ -14,7 +14,7 @@ Simulation::Simulation(bool change)
     }
 
     std::cout << rand() << rand() << rand() << std::endl;
-    int n = std::rand() % 100;
+    int n = 100;//std::rand() % 100;
     for (int i = 0; i < n; i++)
         _persons.push_back(Person(i));
     _persons.at(std::rand() % _persons.size()).infected();
