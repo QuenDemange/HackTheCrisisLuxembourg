@@ -14,6 +14,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include <list>
 
 typedef enum state {
@@ -25,13 +26,17 @@ typedef enum state {
 
 class Person {
     public:
-        Person();
+        Person(int id);
         ~Person();
+        bool touch(sf::Vector2f position);
         void infected();
-        void simulate();
+        void simulate(std::vector<Person> persons);
         void move(float _delta);
         sf::CircleShape *getCircle();
     private:
+        const int _id;
+        bool containId(int id);
+        void cleanList(std::vector<Person> persons);
         void changeDest();
         bool isArrived();
         void calcUnit();

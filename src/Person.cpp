@@ -8,12 +8,12 @@
 #include "Person.hpp"
 #include "Define.hpp"
 
-Person::Person()
-: _body(), _position(), _direction()
+Person::Person(int id)
+: _body(), _position(), _direction(), _id(id)
 {
     _state = ALIVE;
-    _position.x = std::rand() % SIM_X;
-    _position.y = std::rand() % SIM_Y;
+    _position.x = std::rand() % static_cast<int> (SIM_X - _body.getRadius()) + _body.getRadius();
+    _position.y = std::rand() % static_cast<int> (SIM_Y - _body.getRadius()) + _body.getRadius();
     _body.setFillColor(sf::Color::White);
     _body.setRadius(5);
     _body.setPosition(_position);
@@ -38,10 +38,45 @@ void Person::infected()
     _body.setFillColor(sf::Color::Yellow);
 }
 
-void Person::simulate() // TO DO Mettre en argument toute les probabilité du menu
+bool Person::touch(sf::Vector2f position)
 {
+    if (position.x + _body.getRadius() >= _position.x - _body.getRadius() && position.x - _body.getRadius() <= _position.x + _body.getRadius())
+        if (position.y + _body.getRadius() >= _position.y - _body.getRadius() && position.y - _body.getRadius() <= _position.y + _body.getRadius())
+            return (true);
+    return (false);
+}
+
+bool Person::containId(int id)
+{
+    for (std::list<int>::iterator i = _alreadyCalculate.begin; i != _alreadyCalculate.end(); ++i)
+        if (*i == id)
+            return (true);
+    return (false);
+}
+
+void Person::cleanList(std::vector<Person> persons)
+{
+    for (std::vector<Person>::iterator i = persons.begin(); i != persons.end(); ++i)
+        if (containId(i->_id))
+            if (!touch(i->_position))
+                _alreadyCalculate.remove(i->_id);
+}
+
+void Person::simulate(std::vector<Person> persons) // TO DO Mettre en argument toute les probabilité du menu
+{
+    float contagious= 30;
     if (_state != INFECTED)
         return;
+    for (std::vector<Person>::iterator i = persons.begin(); i != persons.end(); ++i) {
+        if (i->_id == _id || containId(i->_id) || i->_state == INFECTED ||i->_state == DEATH || i->_state == IMMUNE)
+            continue;
+        if (touch(i->_position))
+            if (std::rand() % 101 + 1 <= contagious) {
+                i->infected();
+                _alreadyCalculate.push_front(i->_id);
+            }
+    }
+    cleanList(persons);
 }
 
 sf::CircleShape *Person::getCircle()
